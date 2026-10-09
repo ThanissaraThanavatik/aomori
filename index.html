@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style><title>Aomori Trip 2569</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500&family=Bai+Jamjuree:wght@400;500;600&family=Kaisei+Decol:wght@500;700&display=swap">
+<style>
+/* Layout: a travel notebook. Anime-sky hero, boarding passes, a hand-drawn route map, then one "night" page per stop down a leaf-stamped timeline. */
+:root {
+  /* origami washi palette */
+  --paper: #F4EFE6;        /* washi page */
+  --card: #FFFDF8;
+  --ink: #1E2A44;          /* sumi indigo */
+  --ink-soft: #5E6782;
+  --line: #E3D9C8;
+  --momiji: #D7402B;       /* shu red, the accent */
+  --momiji-soft: #F8DDD3;
+  --ginkgo: #E0A526;       /* kogane gold */
+  --ginkgo-soft: #FBEFD2;
+  --sky: #2B4C7E;          /* ai indigo */
+  --sky-soft: #DDE5F0;
+  --matcha: #3E7F5C;
+  --matcha-soft: #DFEDE3;
+  --cat: #8C8C96;
+  /* aliases used by passport + drive components */
+  --bg: #F4EFE6; --surface: #FFFDF8; --accent: #D7402B; --accent-soft: #F8DDD3; --leaf: #3E7F5C; --on-accent: #FFFFFF; --radius: 4px;
+
+  --f-display: "Mitr", "Kaisei Decol", "Leelawadee UI", system-ui, sans-serif;
+  --f-body: "Bai Jamjuree", "Leelawadee UI", "Thonburi", system-ui, sans-serif;
+  --f-jp: "Kaisei Decol", "Hiragino Mincho ProN", serif;
+
+  --r: 4px;
+  --shadow: 0 1px 0 rgba(30,42,68,.06), 0 14px 22px -16px rgba(30,42,68,.55);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--momiji); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible + span { outline: 3px solid var(--sky); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 400; text-wrap: balance; margin: 0; line-height: 1.2; }
+.jp { font-family: var(--f-jp); font-weight: 700; }
+
+#leaves { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 16px; }
+section { padding-block: 48px 8px; }
+.sec-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.sec-head h2 { font-size: clamp(26px, 4vw, 34px); }
+.sec-head .jp { color: var(--momiji); font-size: 15px; letter-spacing: .12em; }
+.sec-head p { flex-basis: 100%; margin: 0; color: var(--ink-soft); }
+
+/* ---------- hero ---------- */
+.hero { position: relative; overflow: hidden; background: linear-gradient(180deg, #7EC0EC 0%, #B9DDF3 38%, #FCE6D2 72%, var(--paper) 100%); }
+.hero-inner { position: relative; z-index: 2; padding-block: 40px 150px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; }
+.hero .stamp { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.8); border-radius: 999px; padding: 4px 14px; font-size: 13px; color: var(--ink); }
+.hero .stamp b { color: var(--momiji); font-weight: 600; }
+.hero h1 { font-size: clamp(54px, 11vw, 112px); color: #fff; letter-spacing: .02em; text-shadow: 0 3px 0 var(--momiji), 0 6px 18px rgba(120,40,20,.25); margin-top: 14px; }
+.hero h1 .jp { display: block; font-size: .32em; letter-spacing: .4em; color: var(--ink); text-shadow: none; margin-top: 6px; }
+.hero .lede { max-width: 30em; margin: 14px 0 0; font-size: 16px; }
+.hero svg.hills { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 190px; z-index: 1; }
+.mascot { width: clamp(110px, 18vw, 170px); height: auto; }
+
+.count { margin-top: 22px; display: inline-flex; gap: 10px; flex-wrap: wrap; align-items: stretch; }
+.count .cell { background: var(--card); border-radius: 14px; padding: 8px 14px; min-width: 70px; text-align: center; box-shadow: var(--shadow); }
+.count .n { font-family: var(--f-display); font-size: 30px; line-height: 1; color: var(--momiji); font-variant-numeric: tabular-nums; }
+.count .u { font-size: 12px; color: var(--ink-soft); }
+.count .label { align-self: center; font-size: 14px; max-width: 14em; }
+
+/* ---------- crew ---------- */
+.crew { display: flex; flex-wrap: wrap; gap: 10px; }
+.member { display: flex; align-items: center; gap: 10px; background: var(--card); border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 16px 6px 6px; }
+.member .av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-size: 18px; color: #fff; }
+.member b { font-weight: 600; display: block; line-height: 1.2; }
+.member small { color: var(--ink-soft); font-size: 12.5px; }
+
+/* ---------- flights ---------- */
+.passes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.pass { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); display: grid; grid-template-columns: 1fr; overflow: hidden; position: relative; }
+.pass-top { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; color: #fff; }
+.pass-top .who { font-weight: 600; }
+.pass-top .tag { font-size: 12px; background: rgba(255,255,255,.25); border-radius: 999px; padding: 2px 10px; }
+.pass.nh .pass-top { background: linear-gradient(90deg, #3E7CC0, #6DA9DE); }
+.pass.tg .pass-top { background: linear-gradient(90deg, #7B3F99, #B56DC4); }
+.legs { padding: 6px 18px 16px; display: grid; gap: 0; }
+.leg { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; padding-block: 12px; border-bottom: 2px dashed var(--line); }
+.leg:last-child { border-bottom: 0; }
+.leg .date { grid-column: 1 / -1; font-size: 12.5px; color: var(--ink-soft); display: flex; justify-content: space-between; gap: 8px; }
+.leg .date b { color: var(--ink); font-weight: 600; }
+.ap { font-family: var(--f-display); font-size: 30px; line-height: 1; }
+.ap small { display: block; font-family: var(--f-body); font-size: 12px; color: var(--ink-soft); margin-top: 4px; }
+.ap.r { text-align: right; }
+.leg .plane { color: var(--ink-soft); font-size: 12px; text-align: center; font-variant-numeric: tabular-nums; }
+.leg .plane svg { display: block; margin: 0 auto 2px; }
+.t { font-variant-numeric: tabular-nums; }
+.plus1 { font-size: 11px; color: var(--momiji); vertical-align: super; }
+.leg.pending .ap { color: var(--ink-soft); }
+.chip { display: inline-block; font-size: 12px; border-radius: 999px; padding: 1px 10px; background: var(--ginkgo-soft); color: #8A5A0E; }
+
+/* ---------- route ---------- */
+.route { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 28px; align-items: start; }
+.map { background: var(--sky-soft); border-radius: var(--r); padding: 10px; }
+.map svg { width: 100%; height: auto; display: block; }
+.map text { font-family: var(--f-body); }
+.stops { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.stops li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; position: relative; padding-bottom: 16px; }
+.stops li::before { content: ""; position: absolute; left: 17px; top: 34px; bottom: 0; border-left: 2px dashed var(--line); }
+.stops li:last-child::before { display: none; }
+.stops .dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-family: var(--f-display); font-size: 17px; }
+.stops b { font-weight: 600; }
+.stops .meta { font-size: 13px; color: var(--ink-soft); display: block; }
+.drive { font-size: 12.5px; color: var(--matcha); }
+.maplink { display: inline-flex; gap: 6px; align-items: center; margin-top: 4px; font-weight: 500; }
+
+/* ---------- nights ---------- */
+.night { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 20px; padding-block: 20px; }
+.date-stamp { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 14px); align-self: start; text-align: center; }
+.date-stamp .leaf { width: 92px; height: 92px; margin: 0 auto; position: relative; display: grid; place-items: center; }
+.date-stamp .leaf svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.date-stamp .d { position: relative; font-family: var(--f-display); font-size: 34px; color: #fff; line-height: 1; margin-top: 6px; }
+.date-stamp .m { position: relative; display: block; font-size: 11px; color: #fff; margin-top: 2px; letter-spacing: .08em; }
+.date-stamp .dow { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-soft); }
+.date-stamp .jpdow { font-family: var(--f-jp); color: var(--momiji); font-weight: 700; }
+
+.hotel { background: var(--card); border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; }
+.photo { position: relative; aspect-ratio: 16 / 7; max-width: 100%; background: linear-gradient(135deg, var(--ginkgo-soft), var(--momiji-soft)); overflow: hidden; }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; position: relative; }
+.photo .fallback { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-jp); font-size: 28px; color: var(--momiji); opacity: .6; }
+.photo .inset { position: absolute; right: 12px; top: 12px; width: clamp(84px, 18%, 128px); aspect-ratio: 1; max-width: 100%; border-radius: 14px; overflow: hidden; border: 3px solid var(--card); box-shadow: 0 6px 16px -6px rgba(0,0,0,.35); background: var(--momiji-soft); }
+.photo .inset img { width: 100%; height: 100%; object-fit: cover; }
+.photo .inset span { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font-size: 11px; color: #fff; background: rgba(58,43,43,.55); padding: 1px 0; }
+.photo .credit { position: absolute; right: 8px; bottom: 6px; font-size: 10.5px; color: #fff; background: rgba(0,0,0,.35); padding: 1px 8px; border-radius: 999px; }
+.photo .nights { position: absolute; left: 12px; top: 12px; background: var(--card); color: var(--momiji); font-weight: 600; font-size: 13px; border-radius: 999px; padding: 3px 12px; }
+.photo .area { position: absolute; left: 12px; bottom: 10px; background: rgba(255,255,255,.92); border-radius: 10px; padding: 2px 10px; font-size: 13px; }
+.photo .area .jp { color: var(--momiji); margin-left: 4px; }
+.hotel-body { padding: 18px 20px 20px; display: grid; gap: 14px; }
+.hotel-body h3 { font-size: 26px; }
+.hotel-body h3 + .jpname { font-family: var(--f-jp); color: var(--ink-soft); font-size: 14px; margin-top: -10px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.fact { font-size: 13px; border-radius: 999px; padding: 3px 12px; background: var(--sky-soft); color: #245A7E; }
+.fact.bf-yes { background: var(--matcha-soft); color: #36632C; }
+.fact.bf-no { background: #F3ECE8; color: var(--ink-soft); }
+.fact.special { background: var(--momiji-soft); color: #9A2B19; }
+.rooms { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+.room { border: 1.5px dashed var(--line); border-radius: 14px; padding: 10px 14px; display: grid; gap: 2px; }
+.room b { font-weight: 600; }
+.room span { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-size: 13.5px; font-weight: 500; border-radius: 999px; padding: 6px 14px; border: 1.5px solid var(--momiji); color: var(--momiji); background: var(--card); }
+.btn:hover { background: var(--momiji-soft); }
+.btn.solid { background: var(--momiji); color: #fff; }
+.btn.solid:hover { background: #BF3A25; }
+.addr { font-size: 13px; color: var(--ink-soft); margin: 0; }
+.note { background: var(--ginkgo-soft); border-radius: 12px; padding: 10px 14px; font-size: 14px; }
+
+.explore { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 14px; margin-top: 14px; }
+.box { background: var(--card); border-radius: var(--r); padding: 16px 18px; border: 1.5px solid var(--line); }
+.box h4 { margin: 0 0 10px; font-family: var(--f-display); font-weight: 400; font-size: 19px; display: flex; gap: 8px; align-items: center; }
+.box h4 .jp { font-size: 12px; color: var(--momiji); letter-spacing: .1em; }
+.spots { display: grid; gap: 12px; }
+.spot { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; align-items: start; }
+.spot .thumb { width: 92px; height: 70px; border-radius: 12px; overflow: hidden; background: var(--momiji-soft); }
+.spot .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.spot b { font-weight: 600; display: block; line-height: 1.35; }
+.spot .jp { font-weight: 500; color: var(--ink-soft); font-size: 12.5px; }
+.spot p { margin: 2px 0 0; font-size: 13.5px; }
+.spot .dist { font-size: 12px; color: var(--matcha); }
+.foods { display: grid; gap: 10px; }
+.food { display: grid; gap: 1px; padding-bottom: 10px; border-bottom: 1.5px dotted var(--line); }
+.food:last-child { border-bottom: 0; padding-bottom: 0; }
+.food b { font-weight: 600; }
+.food .jp { font-weight: 500; color: var(--ink-soft); font-size: 12.5px; }
+.food p { margin: 0; font-size: 13.5px; }
+.food .order { font-size: 12.5px; color: #9A2B19; }
+
+.momiji-meter { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.momiji-meter .bar { flex: 1; height: 8px; border-radius: 99px; background: linear-gradient(90deg, var(--matcha), var(--ginkgo), var(--momiji)); position: relative; max-width: 180px; }
+.momiji-meter .bar i { position: absolute; top: -4px; width: 16px; height: 16px; border-radius: 50%; background: var(--card); border: 3px solid var(--ink); transform: translateX(-50%); }
+
+/* ---------- checklist ---------- */
+.checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.checks .box ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.checks label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.checks input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.checks .tick { flex: 0 0 22px; height: 22px; border-radius: 7px; border: 2px solid var(--line); background: var(--card); display: grid; place-items: center; margin-top: 2px; transition: background .15s, border-color .15s; }
+.checks input:checked + .tick { background: var(--matcha); border-color: var(--matcha); }
+.checks input:checked + .tick::after { content: ""; width: 10px; height: 6px; border-left: 2.5px solid #fff; border-bottom: 2.5px solid #fff; transform: rotate(-45deg) translate(1px, -1px); }
+.checks input:checked ~ .txt { color: var(--ink-soft); text-decoration: line-through; }
+.checks input:focus-visible + .tick { outline: 3px solid var(--sky); outline-offset: 2px; }
+.progress { font-size: 13px; color: var(--ink-soft); }
+
+footer { padding-block: 48px 64px; text-align: center; color: var(--ink-soft); font-size: 13px; }
+footer .jp { display: block; font-size: 22px; color: var(--momiji); margin-bottom: 6px; }
+
+.passport { background: linear-gradient(100deg, var(--sky) 0 50%, #24416D 50% 100%); padding: 8px; border-radius: 12px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); box-shadow: var(--shadow); }
+.pp-page { min-width: 0; padding: 16px; background: repeating-radial-gradient(circle at 50% 130%, rgba(43,76,126,.05) 0 1.5px, transparent 1.5px 9px), var(--surface); }
+.pp-left { border-radius: 6px 0 0 6px; box-shadow: inset -14px 0 16px -14px rgba(30,42,68,.35); display: grid; gap: 10px; align-content: start; }
+.pp-right { border-radius: 0 6px 6px 0; box-shadow: inset 14px 0 16px -14px rgba(30,42,68,.35); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 8px; align-content: center; }
+.pp-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; color: var(--sky); font-weight: 600; letter-spacing: .14em; font-size: 12px; border-bottom: 1.5px solid var(--sky); padding-bottom: 6px; }
+.pp-head .jp { font-size: 18px; letter-spacing: .2em; color: var(--accent); }
+.pp-id { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 12px; align-items: start; }
+.pp-photo { aspect-ratio: 4 / 5; background: var(--sky-soft); border-radius: 3px; display: grid; place-items: end center; overflow: hidden; border: 1px solid var(--line); }
+.pp-photo svg { width: 92%; height: auto; }
+.pp-fields { display: grid; gap: 4px; font-size: 13px; line-height: 1.3; }
+.pp-fields span { display: block; font-size: 10px; letter-spacing: .1em; color: var(--ink-soft); text-transform: uppercase; }
+.pp-fields b { font-weight: 600; overflow-wrap: anywhere; }
+.mrz { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 10.5px; letter-spacing: .12em; line-height: 1.5; color: var(--ink); background: rgba(43,76,126,.06); padding: 6px 8px; border-radius: 3px; white-space: nowrap; overflow: hidden; }
+.pp-right .stamp { --c: var(--accent); --r: -6deg; aspect-ratio: 1; max-width: 100%; color: var(--c); border: 2.5px solid var(--c); border-radius: 50%; display: grid; place-content: center; text-align: center; padding: 4px; font-size: 8.5px; line-height: 1.15; font-weight: 600; letter-spacing: .04em; transform: rotate(var(--r)); opacity: .9; position: relative; }
+.pp-right .stamp::after { content: ""; position: absolute; inset: 3px; border: 1px solid var(--c); border-radius: inherit; opacity: .6; }
+.pp-right .stamp b { display: block; font-family: var(--f-jp); font-size: 17px; letter-spacing: 0; line-height: 1.05; }
+.pp-right .stamp.sq { border-radius: 8px; }
+.pp-right .stamp.now { box-shadow: 0 0 0 4px var(--accent-soft); }
+.pp-right .stamp.thump { animation: thump .55s cubic-bezier(.2,.9,.3,1.3); }
+@keyframes thump { 0% { transform: rotate(var(--r)) scale(1.6); opacity: .1; } 60% { transform: rotate(var(--r)) scale(.92); opacity: 1; } 100% { transform: rotate(var(--r)) scale(1); opacity: .9; } }
+
+.drive { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.drive-map { border-radius: 6px; padding: 8px; box-shadow: var(--shadow);
+  background:
+    radial-gradient(circle at 50% 100%, transparent 7px, rgba(43,76,126,.14) 7.5px 8.5px, transparent 9px) 0 0 / 22px 11px,
+    radial-gradient(circle at 50% 100%, transparent 7px, rgba(43,76,126,.14) 7.5px 8.5px, transparent 9px) 11px 5.5px / 22px 11px,
+    var(--sky-soft); }
+.drive-map svg { width: 100%; height: auto; display: block; }
+.drive-map text { font-family: var(--f-body); }
+.drive-panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; display: grid; gap: 12px; position: relative; overflow: hidden; }
+.dp-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.dp-day { font-family: var(--f-display); font-size: 15px; color: var(--ink-soft); }
+.dp-day b { font-size: 26px; color: var(--ink); font-weight: 500; margin-right: 6px; }
+.dp-status { font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--leaf); padding: 2px 10px; border-radius: 2px; }
+.dp-status.arrived { background: var(--accent); }
+.dp-route { font-family: var(--f-display); font-size: 21px; line-height: 1.3; }
+.dp-route .arrow { margin-inline: 6px; }
+.dp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.dp-stats div { background: linear-gradient(160deg, var(--sky-soft) 0 60%, #D2DCEA 60%); border-radius: 3px; padding: 8px 10px; }
+.dp-stats span { display: block; font-size: 11px; color: var(--ink-soft); letter-spacing: .06em; }
+.dp-stats b { font-family: var(--f-display); font-weight: 500; font-size: 19px; font-variant-numeric: tabular-nums; }
+.odo { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.odo .digits { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 18px; font-weight: 600; letter-spacing: .12em; background: var(--ink); color: var(--surface); border-radius: 3px; padding: 2px 8px; font-variant-numeric: tabular-nums; }
+.dp-hotel { font-size: 13.5px; border-top: 1.5px dashed var(--line); padding-top: 10px; }
+.dp-legs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.dp-legs i { height: 6px; border-radius: 1px; background: var(--line); transition: background .3s; }
+.dp-legs i.done { background: var(--leaf); }
+.dp-legs i.on { background: var(--accent); }
+.dp-ctrl { display: flex; gap: 8px; flex-wrap: wrap; }
+.dp-ctrl button { font: inherit; font-size: 13.5px; font-weight: 500; cursor: pointer; border-radius: 3px; padding: 6px 14px; border: 2px solid var(--sky); color: var(--sky); background: var(--surface); }
+.dp-ctrl button.primary { background: var(--sky); color: var(--on-accent); }
+.map-stop { transition: fill .3s; }
+/* ---------- origami treatment ---------- */
+body { background: repeating-linear-gradient(115deg, rgba(120,90,50,.03) 0 2px, transparent 2px 7px), var(--paper); }
+h1, h2, h3 { font-weight: 500; }
+.hero { background: linear-gradient(160deg, #FBF6EC 0 56%, #EFE5D3 56% 100%); }
+.hero h1 { color: var(--ink); text-shadow: none; font-weight: 500; }
+.hero h1 .jp { color: var(--momiji); }
+.hero .stamp { border-radius: 3px; border: 1.5px solid var(--line); }
+.count .cell { border-radius: 3px; background: linear-gradient(160deg, var(--card) 0 60%, #F6EEDF 60%); }
+.sec-head h2 { color: #fff; font-size: clamp(22px, 3.4vw, 28px); padding: 3px 34px 3px 16px; background: linear-gradient(170deg, var(--sky) 0 55%, #24416D 55% 100%); clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 50%, 100% 100%, 0 100%); }
+.hotel, .pass, .box, .drive-panel { position: relative; }
+.hotel::before, .pass::before, .box::before { content: ""; position: absolute; top: 0; right: 0; width: 26px; height: 26px; z-index: 4; background: linear-gradient(225deg, var(--paper) 0 50%, #E2D4BC 50% 100%); box-shadow: -2px 2px 3px rgba(30,42,68,.12); }
+.box { border: 0; box-shadow: var(--shadow); background: var(--card); }
+.member { border-radius: 4px; }
+.member .av { border-radius: 0; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.pass.nh .pass-top { background: linear-gradient(100deg, var(--sky) 0 62%, #24416D 62% 100%); }
+.pass.tg .pass-top { background: linear-gradient(100deg, #7B3F99 0 62%, #64307E 62% 100%); }
+.btn { border-radius: 3px; }
+.fact { border-radius: 2px; }
+.room { border-style: solid; background: linear-gradient(160deg, var(--card) 0 60%, #F8F2E7 60%); }
+.photo .inset { border-radius: 2px; transform: rotate(3deg); }
+.photo .nights { border-radius: 3px; }
+.spot .thumb { border-radius: 2px; }
+.note { border-radius: 3px; }
+.checks .tick { border-radius: 3px; }
+.spot-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 4px; }
+.gm { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; text-decoration: none; color: var(--sky); background: var(--card); border: 1.5px solid var(--sky); border-radius: 3px; padding: 0 8px; line-height: 1.6; }
+.gm:hover { background: var(--sky-soft); }
+.food .gm { justify-self: start; margin-top: 4px; }
+.near { font-size: 11.5px; font-weight: 600; color: #2D5E43; background: var(--matcha-soft); border-radius: 2px; padding: 0 8px; }
+.spot .thumb .ph { display: grid; place-items: center; width: 100%; height: 100%; font-family: var(--f-jp); font-size: 30px; color: #fff; background: linear-gradient(135deg, #E5543E 0 50%, var(--momiji) 50% 100%); }
+.map-link-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 760px) {
+  .hero-inner { grid-template-columns: 1fr; padding-bottom: 120px; }
+  .mascot { width: 88px; justify-self: end; order: -1; margin-bottom: -28px; }
+  .route { grid-template-columns: 1fr; }
+  .night { grid-template-columns: 1fr; gap: 10px; }
+  .date-stamp { position: static; display: flex; align-items: center; gap: 12px; text-align: left; }
+  .date-stamp .leaf { width: 68px; height: 68px; margin: 0; }
+  .date-stamp .d { font-size: 26px; }
+  .date-stamp .dow { margin-top: 0; }
+  .explore { grid-template-columns: 1fr; }
+  .photo { aspect-ratio: 16 / 9; }
+  .passport { grid-template-columns: 1fr; }
+  .pp-left { border-radius: 6px 6px 0 0; box-shadow: inset 0 -14px 16px -14px rgba(30,42,68,.35); }
+  .pp-right { border-radius: 0 0 6px 6px; box-shadow: inset 0 14px 16px -14px rgba(30,42,68,.35); }
+  .drive { grid-template-columns: 1fr; }
+  .drive-map { max-width: 360px; width: 100%; justify-self: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  #leaves { display: none; }
+  .pp-right .stamp.thump { animation: none; }
+}
+</style>
+
+</head><body>
+<canvas id="leaves" aria-hidden="true"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="cat-art" viewBox="0 0 160 170">
+              <ellipse cx="80" cy="158" rx="48" ry="8" fill="rgba(90,50,30,.15)"/>
+              <path d="M38 150 Q36 104 80 102 Q124 104 122 150 Z" fill="#A9A9B2"/>
+              <path d="M60 150 Q62 122 80 120 Q98 122 100 150 Z" fill="#fff"/>
+              <path d="M118 112 Q142 92 136 70" stroke="#A9A9B2" stroke-width="14" stroke-linecap="round" fill="none"/>
+              <circle cx="136" cy="66" r="11" fill="#fff" stroke="#A9A9B2" stroke-width="3"/>
+              <path d="M30 38 L44 6 L64 30 Z M130 38 L116 6 L96 30 Z" fill="#A9A9B2"/>
+              <path d="M40 30 L46 16 L56 28 Z M120 30 L114 16 L104 28 Z" fill="#F7B9B0"/>
+              <ellipse cx="80" cy="62" rx="54" ry="46" fill="#A9A9B2"/>
+              <path d="M66 20 L70 34 M80 18 L80 34 M94 20 L90 34" stroke="#6E6E78" stroke-width="4" stroke-linecap="round"/>
+              <ellipse cx="80" cy="80" rx="28" ry="20" fill="#fff"/>
+              <path d="M54 60 Q60 52 66 60 M94 60 Q100 52 106 60" stroke="#3A2B2B" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <path d="M76 72 L84 72 L80 77 Z" fill="#E88A8A"/>
+              <path d="M80 77 Q74 86 68 80 M80 77 Q86 86 92 80" stroke="#3A2B2B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <ellipse cx="54" cy="76" rx="8" ry="5" fill="#F7B9B0" opacity=".8"/>
+              <ellipse cx="106" cy="76" rx="8" ry="5" fill="#F7B9B0" opacity=".8"/>
+            </symbol></svg>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="stamp">ทริปใบไม้เปลี่ยนสี · <b>10–18 ต.ค. 2569</b> · 8 คืน 6 ที่พัก</span>
+      <h1>Aomori Trip<span class="jp">東北 紅葉の旅</span></h1>
+      <p class="lede">ขับรถจากนาริตะขึ้นเหนือ ผ่านไอสึ โมริโอกะ ไปถึงอาโอโมริ แล้ววนลงมาเซนได นิกโก้ ก่อนบินกลับจากนาริตะ</p>
+      <div class="count" id="count" aria-live="polite"></div>
+    </div>
+    <svg class="mascot" viewBox="0 0 160 170" role="img" aria-label="แมวลายสลิดโบกมือ">
+      <ellipse cx="80" cy="158" rx="48" ry="8" fill="rgba(90,50,30,.15)"/>
+      <path d="M38 150 Q36 104 80 102 Q124 104 122 150 Z" fill="#A9A9B2"/>
+      <path d="M60 150 Q62 122 80 120 Q98 122 100 150 Z" fill="#fff"/>
+      <path d="M118 112 Q142 92 136 70" stroke="#A9A9B2" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <circle cx="136" cy="66" r="11" fill="#fff" stroke="#A9A9B2" stroke-width="3"/>
+      <path d="M30 38 L44 6 L64 30 Z M130 38 L116 6 L96 30 Z" fill="#A9A9B2"/>
+      <path d="M40 30 L46 16 L56 28 Z M120 30 L114 16 L104 28 Z" fill="#F7B9B0"/>
+      <ellipse cx="80" cy="62" rx="54" ry="46" fill="#A9A9B2"/>
+      <path d="M66 20 L70 34 M80 18 L80 34 M94 20 L90 34" stroke="#6E6E78" stroke-width="4" stroke-linecap="round"/>
+      <path d="M28 58 L40 60 M28 70 L40 68 M132 58 L120 60 M132 70 L120 68" stroke="#6E6E78" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="80" cy="80" rx="28" ry="20" fill="#fff"/>
+      <path d="M54 60 Q60 52 66 60 M94 60 Q100 52 106 60" stroke="#3A2B2B" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M76 72 L84 72 L80 77 Z" fill="#E88A8A"/>
+      <path d="M80 77 Q74 86 68 80 M80 77 Q86 86 92 80" stroke="#3A2B2B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <ellipse cx="54" cy="76" rx="8" ry="5" fill="#F7B9B0" opacity=".8"/>
+      <ellipse cx="106" cy="76" rx="8" ry="5" fill="#F7B9B0" opacity=".8"/>
+    </svg>
+  </div>
+  <svg class="hills" viewBox="0 0 1200 190" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points="300,190 540,40 560,190" fill="#EDB54A"/><polygon points="540,40 800,190 560,190" fill="#C98E1C"/>
+    <polygon points="-20,190 190,70 205,190" fill="#E86A4F"/><polygon points="190,70 420,190 205,190" fill="#C23B26"/>
+    <polygon points="640,190 880,80 900,190" fill="#4A6C9E"/><polygon points="880,80 1100,190 900,190" fill="#2B4C7E"/>
+    <polygon points="960,190 1110,105 1122,190" fill="#5E9A73"/><polygon points="1110,105 1240,190 1122,190" fill="#3E7F5C"/>
+    <rect x="0" y="180" width="1200" height="10" fill="#F4EFE6"/>
+  </svg>
+</header>
+
+<main class="wrap">
+  <section id="crew" aria-labelledby="crew-h">
+    <div class="sec-head"><h2 id="crew-h">ทีมเที่ยว</h2><span class="jp">なかま</span></div>
+    <div class="crew" id="crewList"></div>
+  </section>
+
+  <section id="passport" aria-labelledby="pp-h">
+    <div class="sec-head"><h2 id="pp-h">พาสปอร์ตทริป</h2><span class="jp">りょけん</span><p>ตราจะปั๊มทีละเมืองตามรถที่วิ่งอยู่ในแผนที่ด้านล่าง</p></div>
+    <div class="passport">
+              <div class="pp-page pp-left">
+                <div class="pp-head"><span>TRIP PASSPORT</span><span class="jp">旅券</span></div>
+                <div class="pp-id">
+                  <div class="pp-photo"><svg viewBox="0 0 160 170" aria-hidden="true"><use href="#cat-art"/></svg></div>
+                  <div class="pp-fields">
+                    <div><span>ชื่อทริป / Trip</span><b>AOMORI AUTUMN 2569</b></div>
+                    <div><span>ผู้ถือ / Holders</span><b>SASI · JARU · PP · JOO · SORA</b></div>
+                    <div><span>วันเดินทาง / Valid</span><b>10 OCT – 18 OCT 2026</b></div>
+                    <div><span>ประเภท / Type</span><b>ROAD TRIP · ~1,575 KM</b></div>
+                  </div>
+                </div>
+                <div class="mrz" aria-label="แถบอ่านด้วยเครื่องของพาสปอร์ต (ตกแต่ง)">P&lt;THAAOMORI&lt;AUTUMN&lt;&lt;SASI&lt;JARU&lt;PP&lt;JOO&lt;SORA&lt;&lt;&lt;<br>TRIP2569&lt;9THA261010&lt;1575KM&lt;&lt;8NIGHTS&lt;&lt;&lt;&lt;&lt;&lt;06</div>
+              </div>
+              <div class="pp-page pp-right" id="stamps">
+                <div class="stamp" style="--c:#2B4C7E;--r:-8deg"><b>成田</b>NARITA<br>IN 10.10</div>
+                <div class="stamp sq" style="--c:#D7402B;--r:5deg"><b>会津</b>AIZU<br>10.10</div>
+                <div class="stamp" style="--c:#3E7F5C;--r:-4deg"><b>盛岡</b>MORIOKA<br>11.10</div>
+                <div class="stamp sq" style="--c:#D7402B;--r:-10deg"><b>青森</b>AOMORI<br>12–13.10</div>
+                <div class="stamp" style="--c:#A87510;--r:7deg"><b>仙台</b>SENDAI<br>14.10</div>
+                <div class="stamp sq" style="--c:#2B4C7E;--r:-3deg"><b>日光</b>NIKKO<br>15.10</div>
+                <div class="stamp" style="--c:#D7402B;--r:9deg"><b>東京</b>TOKYO<br>16–17.10</div>
+                <div class="stamp sq" style="--c:#3E7F5C;--r:-6deg"><b>成田</b>NARITA<br>OUT 18.10</div>
+              </div>
+            </div>
+  </section>
+
+  <section id="flights" aria-labelledby="fl-h">
+    <div class="sec-head"><h2 id="fl-h">เที่ยวบิน</h2><span class="jp">フライト</span><p>ทุกคนลงที่สนามบินนาริตะ อาคาร 1 (Narita T1) เวลาในตั๋วเป็นเวลาท้องถิ่น ไทย = ญี่ปุ่น − 2 ชม.</p></div>
+    <div class="passes" id="passes"></div>
+  </section>
+
+  <section id="route" aria-labelledby="rt-h">
+    <div class="sec-head"><h2 id="rt-h">เส้นทาง</h2><span class="jp">ルート</span><p>รถกระดาษวิ่งตามเส้นทางจริง กดหยุดหรือกระโดดทีละเมืองได้ ขับรถเช่า ใช้บัตร ETC จ่ายค่าทางด่วน เวลาขับเป็นค่าประมาณแบบไม่แวะ</p></div>
+    <div class="drive">
+              <div class="drive-map" id="driveMap"></div>
+              <div class="drive-panel">
+                <div class="dp-top"><span class="dp-day"><b id="dpDay">DAY 1</b><span id="dpDate">เสาร์ 10 ต.ค.</span></span><span class="dp-status" id="dpStatus">กำลังขับ</span></div>
+                <div class="dp-route"><span id="dpFrom">นาริตะ</span><span class="arrow" aria-hidden="true">→</span><span id="dpTo">ไอสึวากามัตสึ</span></div>
+                <div class="dp-stats"><div><span>ระยะทาง</span><b id="dpKm">290 กม.</b></div><div><span>เวลาขับ</span><b id="dpTime">3 ชม. 45 นาที</b></div></div>
+                <div class="odo"><span>ไมล์สะสม</span><span class="digits" id="dpOdo">0000</span><span>/ 1,575 กม.</span></div>
+                <div class="dp-hotel">คืนนี้นอน: <b id="dpHotel">Hotel New Palace</b></div>
+                <div class="dp-legs" id="dpLegs" aria-hidden="true"></div>
+                <a class="btn solid" id="fullRoute" target="_blank" rel="noopener" style="justify-self:start">เปิดเส้นทางทั้งหมดใน Google Maps ↗</a>
+                <div class="dp-ctrl">
+                  <button type="button" id="btnPrev">◀ ก่อนหน้า</button>
+                  <button type="button" id="btnPlay" class="primary">⏸ หยุด</button>
+                  <button type="button" id="btnNext">ถัดไป ▶</button>
+                </div>
+              </div>
+            </div>
+  </section>
+
+  <section id="nights" aria-labelledby="nt-h">
+    <div class="sec-head"><h2 id="nt-h">ที่พักแต่ละคืน</h2><span class="jp">おやど</span><p>กดที่รูปหรือปุ่มเพื่อเปิดเว็บโรงแรมและแผนที่ ใต้แต่ละที่พักมีที่เที่ยวกับร้านอร่อยที่อยู่ใกล้ๆ</p></div>
+    <div id="nightList"></div>
+  </section>
+
+  <section id="checklist" aria-labelledby="ck-h">
+    <div class="sec-head"><h2 id="ck-h">เช็กลิสต์ก่อนออกเดินทาง</h2><span class="jp">もちもの</span><p class="progress" id="ckProgress"></p></div>
+    <div class="checks" id="checks"></div>
+  </section>
+</main>
+
+<footer>
+  <span class="jp">いってらっしゃい！</span>
+  เที่ยวให้สนุก ขับรถปลอดภัยนะ<br><small>ภาพที่เที่ยวจาก Wikimedia Commons · ภาพที่พักจากเว็บโรงแรมและ Trip.com · เวลาขับรถเป็นค่าประมาณ</small>
+</footer>
+
+<script>
+window.TRIP = {
+  depart: "2026-10-09T23:35:00+07:00",
+  returnHome: "2026-10-18T22:15:00+07:00",
+  crew: [
+    { name: "Sasi", role: "แม่ · บิน ANA", color: "#D8452E" },
+    { name: "Jaru", role: "ป้า · บิน ANA", color: "#E46A35" },
+    { name: "Pp", role: "พลอย · บินการบินไทย", color: "#E9A23B" },
+    { name: "Joo", role: "จู้ · บินการบินไทย", color: "#5E8F52" },
+    { name: "Sora", role: "นัท · กลับก่อน 15 ต.ค.", color: "#5A9BD0" }
+  ],
+  passes: [
+    { cls: "nh", who: "Sasi & Jaru", tag: "ANA", legs: [
+      { flight: "NH808", date: "ศุกร์ 9 ต.ค.", from: "BKK", fromName: "สุวรรณภูมิ", dep: "23:35", to: "NRT", toName: "นาริตะ T1", arr: "07:45", plus1: true, note: "ขาไป" },
+      { flight: "NH807", date: "อาทิตย์ 18 ต.ค.", from: "NRT", fromName: "นาริตะ T1", dep: "17:30", to: "BKK", toName: "สุวรรณภูมิ", arr: "22:15", note: "ขากลับ" }
+    ]},
+    { cls: "tg", who: "Pp, Joo & Sora", tag: "Thai Airways", legs: [
+      { flight: "TG642", date: "ศุกร์ 9 ต.ค.", from: "BKK", fromName: "สุวรรณภูมิ", dep: "23:50", to: "NRT", toName: "นาริตะ T1", arr: "08:10", plus1: true, note: "ขาไป 3 คน" },
+      { flight: "TG677", date: "อาทิตย์ 18 ต.ค.", from: "NRT", fromName: "นาริตะ T1", dep: "17:25", to: "BKK", toName: "สุวรรณภูมิ", arr: "21:15", note: "Pp + Joo" },
+      { flight: "Sora กลับก่อน", date: "พฤหัสฯ 15 ต.ค.", from: "TYO", fromName: "ญี่ปุ่น", dep: "--:--", to: "BKK", toName: "กรุงเทพฯ", arr: "--:--", pending: true, note: "รอเลขเที่ยวบิน" }
+    ]}
+  ],
+  routeUrl: "https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=Narita+International+Airport+Terminal+1&destination=Narita+International+Airport+Terminal+1&waypoints=Hotel+New+Palace+Aizuwakamatsu%7CART+HOTEL+Morioka%7CART+HOTEL+Aomori%7CHotel+JAL+City+Sendai%7CHotel+Kinugawa+Gyoen%7C35.7350540,139.7748413",
+  stops: [
+    { n: "✈", name: "สนามบินนาริตะ T1", jp: "成田空港", short: "นาริตะ", lon: 140.39, lat: 35.77, color: "#5A9BD0", when: "เช้า 10 ต.ค. ลงเครื่อง รับรถเช่า" },
+    { n: 1, name: "ไอสึวากามัตสึ", jp: "会津若松", short: "ไอสึ", lon: 139.93, lat: 37.49, color: "#D8452E", labelLeft: true, when: "10 ต.ค. · 1 คืน", drive: "จากนาริตะ ~290 กม. ราว 3 ชม. 45 นาที" },
+    { n: 2, name: "โมริโอกะ", jp: "盛岡", short: "โมริโอกะ", lon: 141.15, lat: 39.70, color: "#E9A23B", when: "11 ต.ค. · 1 คืน", drive: "~300 กม. ราว 3 ชม. 30 นาที (แวะฮิไรซูมิระหว่างทางได้)" },
+    { n: 3, name: "อาโอโมริ", jp: "青森", short: "อาโอโมริ", lon: 140.74, lat: 40.82, color: "#E46A35", labelLeft: true, when: "12–13 ต.ค. · 2 คืน", drive: "~180 กม. ราว 2 ชม. 15 นาที" },
+    { n: 4, name: "เซนได", jp: "仙台", short: "เซนได", lon: 140.87, lat: 38.26, color: "#C23B2A", when: "14 ต.ค. · 1 คืน", drive: "~360 กม. ราว 4 ชม. (วันที่ขับไกลสุด)" },
+    { n: 5, name: "คินุงาวะออนเซ็น (นิกโก้)", jp: "鬼怒川温泉", short: "คินุงาวะ", lon: 139.72, lat: 36.83, color: "#D98B2B", labelLeft: true, when: "15 ต.ค. · 1 คืน · Sora บินกลับวันนี้", drive: "~230 กม. ราว 3 ชม." },
+    { n: 6, name: "โตเกียว นิชินิปโปริ", jp: "西日暮里", short: "โตเกียว", lon: 139.77, lat: 35.735, color: "#B9472F", labelLeft: true, when: "16–17 ต.ค. · 2 คืน", drive: "~150 กม. ราว 2 ชม. 30 นาที" },
+    { n: "✈", name: "สนามบินนาริตะ T1", jp: "成田空港", short: "", lon: 140.39, lat: 35.77, color: "#5A9BD0", when: "18 ต.ค. บินกลับตอนเย็น", drive: "รถ ~65 กม. ราว 1 ชม. หรือ Skyliner จากนิปโปริ ~40 นาที" }
+  ],
+  nights: [
+    {
+      date: "2026-10-10", nightNo: 1, nights: 1,
+      area: "ไอสึวากามัตสึ, ฟุกุชิมะ", areaJp: "会津若松",
+      hotel: "Hotel New Palace", hotelJp: "ホテルニューパレス",
+      img: "img/h-aizu-a.jpg", imgPos: "30% 50%", credit: "ภาพ: โรงแรม",
+      url: "https://travel.rakuten.co.jp/HOTEL/4781/4781.html",
+      maps: "https://www.google.com/maps/search/?api=1&query=Hotel+New+Palace+Aizuwakamatsu+2-78+Nakamachi",
+      addr: "〒965-0878 福島県会津若松市中町2-78", bf: true,
+      facts: ["เช็กอิน 14:00 · เช็กเอาต์ 11:00", "ที่จอดรถฟรี"],
+      rooms: [{ name: "ห้อง 2 เตียง", ppl: 2, sqm: 17 }, { name: "ห้องญี่ปุ่น 3 ที่นอน", ppl: 3, sqm: 40 }],
+      note: "คืนแรกหลังบินข้ามคืน ขับจากนาริตะราว 4 ชม. เผื่อแวะพักระหว่างทาง",
+      foliage: { pct: 40, t: "เริ่มเปลี่ยนสีบนเขา" },
+      spots: [
+        { name: "ถนนนาโนกะมาจิ", jp: "七日町通り", img: "img/s-nanokamachi.jpg", desc: "ถนนเมืองเก่าสไตล์ไทโช ร้านไม้ คาเฟ่ ร้านขนมพื้นเมือง เดินเล่นตอนเย็น", dist: "เดิน ~10 นาที", q: "七日町通り 会津若松", near: true },
+        { name: "โรงสาเกซูเอฮิโระ", jp: "末廣酒造 嘉永蔵", desc: "โรงบ่มสาเกเก่าแก่ เข้าชมฟรี ชิมสาเก มีคาเฟ่ในโรงบ่ม", dist: "เดิน ~10 นาที", q: "末廣酒造 嘉永蔵", near: true },
+        { name: "บ้านซามูไรไอสึ", jp: "会津武家屋敷", img: "img/s-bukeyashiki.jpg", desc: "จำลองคฤหาสน์ซามูไรชั้นสูง สวนญี่ปุ่นสวย", dist: "~4 กม. · 10 นาที", q: "会津武家屋敷" },
+        { name: "ปราสาทสึรุงะ", jp: "鶴ヶ城", img: "img/s-tsuruga.jpg", desc: "ปราสาทหลังคากระเบื้องแดงหนึ่งเดียวในญี่ปุ่น ขึ้นไปชมวิวบนยอดได้", dist: "~2 กม. · 7 นาที", q: "Tsuruga Castle Aizuwakamatsu" },
+        { name: "เขาอีโมริ & ซาซาเอะโด", jp: "飯盛山・さざえ堂", img: "img/s-sazaedo.jpg", desc: "เจดีย์ไม้บันไดเกลียวคู่ เดินขึ้นแล้วลงอีกทางโดยไม่สวนกัน", dist: "~3 กม. · 10 นาที", q: "Aizu Sazaedo" },
+        { name: "โออุจิจุคุ", jp: "大内宿", img: "img/s-ouchi.jpg", desc: "หมู่บ้านเอโดะหลังคามุงจาก ต้องลองโซบะกินด้วยต้นหอมแทนตะเกียบ", dist: "~30 กม. · 45 นาที", q: "Ouchi-juku" },
+        { name: "บึงโกชิกินุมะ", jp: "五色沼", img: "img/s-goshiki.jpg", desc: "บึงสีฟ้าอมเขียวหลายสี ทางเดินป่าง่ายๆ ราว 1 ชม. ใบไม้สวยช่วงกลางถึงปลาย ต.ค.", dist: "~35 กม. · 50 นาที", q: "Goshikinuma" }
+      ],
+      foods: [
+        { name: "ซอสคัตสึด้ง ร้าน Shirokujaku", jp: "白孔雀食堂", order: "ソースカツ丼 หมูทอดชิ้นหนาราดซอสหวาน", desc: "ร้านดังเก่าแก่ ปิดวันจันทร์และศุกร์ (วันเสาร์ไปได้)", q: "白孔雀食堂 会津若松" },
+        { name: "Takino ข้าวกล่องไม้", jp: "田季野", order: "わっぱめし + ซุปโคซึยุ こづゆ", desc: "ต้นตำรับข้าวนึ่งในกล่องไม้ ใกล้ปราสาท", q: "田季野 会津若松" },
+        { name: "Shibukawa Don'ya", jp: "渋川問屋", order: "ชุด Matsuri Gozen อาหารพื้นเมืองไอสึ", desc: "ร้านในโกดังพ่อค้าสมัยไทโช บรรยากาศดี", q: "渋川問屋 会津若松" }
+      ]
+    },
+    {
+      date: "2026-10-11", nightNo: 2, nights: 1,
+      area: "โมริโอกะ, อิวาเตะ", areaJp: "盛岡",
+      hotel: "ART HOTEL Morioka", hotelJp: "アートホテル盛岡",
+      img: "img/h-morioka.jpg", img2: "img/h-morioka-lobby.jpg", img2Label: "ล็อบบี้", credit: "ภาพ: โรงแรม",
+      url: "https://art-morioka.com/",
+      maps: "https://www.google.com/maps/search/?api=1&query=ART+HOTEL+Morioka",
+      addr: "〒020-0022 岩手県盛岡市大通3-3-18", bf: false,
+      facts: ["เช็กอิน 15:00 · เช็กเอาต์ 11:00"],
+      rooms: [{ name: "ห้อง 2 เตียง", ppl: 2, sqm: 17 }, { name: "ห้อง 3 เตียง", ppl: 3, sqm: 29 }],
+      note: "ที่จอดรถพาร์ทเนอร์จำกัดความสูง 1.80 ม. ถ้ารถสูงกว่านี้ใช้ลานของ Cross Terrace Morioka แทน",
+      foliage: { pct: 35, t: "ในเมืองยังเขียว บนเขาเริ่มแดง" },
+      spots: [
+        { name: "ซากุระผ่าหิน", jp: "石割桜", desc: "ต้นซากุระอายุกว่า 360 ปี งอกผ่ากลางก้อนหินยักษ์ หน้าศาลจังหวัด", dist: "เดิน ~5 นาที", q: "石割桜 盛岡", near: true },
+        { name: "สะพานไคอุน", jp: "開運橋", desc: "สะพานหน้าสถานีโมริโอกะ วิวภูเขาอิวาเตะเหนือแม่น้ำคิตาคามิ", dist: "เดิน ~15 นาที", q: "開運橋 盛岡", near: true },
+        { name: "ศาลเจ้าโมริโอกะฮาจิมังงู", jp: "盛岡八幡宮", img: "img/s-hachimangu.jpg", desc: "ศาลเจ้าใหญ่ประจำเมือง อาคารสีแดงสด", dist: "~2 กม. · 7 นาที", q: "盛岡八幡宮" },
+        { name: "วัดชูซนจิ ฮิไรซูมิ", jp: "中尊寺", img: "img/s-chusonji.jpg", desc: "วัดมรดกโลก ศาลาทองคำคนจิกิโด แวะได้ระหว่างทางจากไอสึ", dist: "ทางผ่าน · ก่อนถึงโมริโอกะ ~1 ชม.", q: "Chusonji Hiraizumi" },
+        { name: "สวนซากปราสาทโมริโอกะ", jp: "盛岡城跡公園", img: "img/s-moriokajo.jpg", desc: "กำแพงหินกลางเมือง เดินเล่นตอนเย็นสบายๆ", dist: "เดิน ~7 นาที", q: "Morioka Castle Ruins Park" },
+        { name: "ตึกอิฐแดงธนาคารอิวาเตะ", jp: "岩手銀行赤レンガ館", img: "img/s-redbrick.jpg", desc: "อาคารสมัยเมจิ คนออกแบบเดียวกับสถานีโตเกียว ริมแม่น้ำนากาสึ", dist: "เดิน ~10 นาที", q: "Iwate Bank Red Brick Building" },
+        { name: "ฟาร์มโคอิวาอิ", jp: "小岩井農場", img: "img/s-koiwai.jpg", desc: "ฟาร์มโคนมใหญ่ ให้อาหารแกะ ไอศกรีมนมสด วิวภูเขาอิวาเตะ", dist: "~15 กม. · 30 นาที", q: "Koiwai Farm" }
+      ],
+      foods: [
+        { name: "วังโกะโซบะ Azumaya", jp: "東家 本店", order: "わんこそば โซบะถ้วยจิ๋วเติมไม่หยุดจนกว่าจะปิดฝา", desc: "ควรจองล่วงหน้า", q: "東家 本店 盛岡" },
+        { name: "เรเมน Pyon Pyon Sha", jp: "ぴょんぴょん舎", order: "盛岡冷麺 บะหมี่เย็นเหนียวนุ่มในน้ำซุปเนื้อ", desc: "สาขาหลักอินาริโจเปิดทุกวัน 11:00–22:00", q: "ぴょんぴょん舎 稲荷町本店" },
+        { name: "จาจาเมน Pairon", jp: "白龍 本店", order: "じゃじゃ麺 แล้วตอกไข่ทำซุป ちいたんたん ปิดท้าย", desc: "ใกล้สวนปราสาท", q: "白龍 本店 盛岡" }
+      ]
+    },
+    {
+      date: "2026-10-12", nightNo: 3, nights: 2, range: "12–13 ต.ค.",
+      area: "อาโอโมริ", areaJp: "青森",
+      hotel: "ART HOTEL Aomori", hotelJp: "アートホテル青森",
+      img: "img/h-aomori.jpg", img2: "img/h-aomori-room.jpg", img2Label: "ห้องที่จอง", credit: "ภาพ: โรงแรม",
+      url: "https://iconia.co.jp/ja/hotel-art-hotel-aomori-aomori",
+      maps: "https://www.google.com/maps/search/?api=1&query=ART+HOTEL+Aomori",
+      addr: "〒030-0802 青森県青森市本町2-1-26", bf: true, bfText: "รวมอาหารเช้า (ตามตาราง)",
+      facts: ["เช็กอิน 14:00 · เช็กเอาต์ 11:00", { t: "ห้องมุมชั้นบนสุด วิวอ่าว", special: true }],
+      rooms: [{ name: "Deluxe Forth 5 เตียง", ppl: 5, sqm: 42, extra: "เตียง 4 + โซฟาเบด" }],
+      note: "12 ต.ค. เป็นวันหยุดกีฬาของญี่ปุ่น คนจะเยอะ · ตลาดปลาโนกเกะด้ง<b>ปิดวันอังคาร 13 ต.ค.</b> ไปวันที่ 12 หรือเช้า 14 ก่อนออกเดินทาง · โรงแรมซ่อมผนังด้านนอกถึง 30 พ.ย. วิวอาจติดนั่งร้าน",
+      foliage: { pct: 85, t: "ฮักโกดะกำลังสวยสุด" },
+      spots: [
+        { name: "A-Factory", jp: "エーファクトリー", img: "img/s-afactory.jpg", desc: "อาคารกระจกริมท่าเรือ มีโรงทำไซเดอร์แอปเปิล ชิมไซเดอร์ ขนมแอปเปิล ของฝากอาโอโมริ", dist: "~1.5 กม. · เดิน 15 นาที (ข้างสถานีอาโอโมริ)", q: "A-FACTORY 青森", near: true },
+        { name: "พิพิธภัณฑ์เนบุตะ Wa Rasse", jp: "ねぶたの家 ワ・ラッセ", img: "img/s-warasse.jpg", desc: "โคมยักษ์ของจริงจากเทศกาลเนบุตะ ตึกสีแดงติดกับ A-Factory เป็นแผนสำรองวันฝนตก", dist: "~1.5 กม. · เดิน 15 นาที", q: "ねぶたの家 ワ・ラッセ", near: true },
+        { name: "ตึกสามเหลี่ยม ASPAM", jp: "アスパム", desc: "ตึกสามเหลี่ยมริมอ่าว ชั้น 13 เป็นจุดชมวิวอ่าวมุตสึ ชั้นล่างขายของฝากทั้งจังหวัด", dist: "~1.5 กม. · เดิน 15 นาที", q: "青森県観光物産館アスパム", near: true },
+        { name: "เรือพิพิธภัณฑ์ฮักโกดะมารุ", jp: "八甲田丸", desc: "เรือเฟอร์รี่รถไฟเซกังเก่าจอดถาวร ขึ้นไปดูห้องเครื่องและตู้รถไฟในเรือ", dist: "~1.7 กม. · เดิน 20 นาที", q: "青函連絡船メモリアルシップ八甲田丸", near: true },
+        { name: "พิพิธภัณฑ์ศิลปะอาโอโมริ", jp: "青森県立美術館", img: "img/s-aomoriart.jpg", desc: "ตึกขาวโมเดิร์น มีหมายักษ์ Aomori-ken ของนาระ โยชิโทโมะ", dist: "~6 กม. · 15 นาที", q: "青森県立美術館" },
+        { name: "แหล่งโบราณคดีซันไนมารุยามะ", jp: "三内丸山遺跡", img: "img/s-sannai.jpg", desc: "หมู่บ้านยุคโจมงมรดกโลก หอไม้สูงจำลอง อยู่ติดพิพิธภัณฑ์ศิลปะ", dist: "~6 กม. · 15 นาที", q: "三内丸山遺跡" },
+        { name: "กระเช้าฮักโกดะ", jp: "八甲田ロープウェー", img: "img/s-hakkoda.jpg", desc: "ขึ้นกระเช้าชมป่าบีชสีทองทั้งภูเขา จุดใบไม้แดงที่ตรงช่วงทริปที่สุด บนยอดหนาว เอาเสื้อกันหนาวไป", dist: "~20 กม. · 40 นาที", q: "Hakkoda Ropeway" },
+        { name: "สะพานโจงาคุระ + ซูกายุออนเซ็น", jp: "城ヶ倉大橋・酸ヶ湯", img: "img/s-jogakura.jpg", desc: "สะพานโค้งสูงเหนือหุบเขาใบไม้แดง แล้วแวะแช่ออนเซ็นไม้สนเก่าแก่", dist: "~35 กม. · 50 นาที", q: "Jogakura Bridge" },
+        { name: "ลำธารโออิราเสะ", jp: "奥入瀬渓流", img: "img/s-oirase.jpg", desc: "ลำธารใสในป่า น้ำตกหลายสาย เดินเลียบลำธารช่วงสั้นๆ ได้ (ต.ค. นี้ขับรถเข้าได้)", dist: "~60 กม. · 1 ชม. 20 นาที", q: "Oirase Gorge Ishigedo" },
+        { name: "ทะเลสาบโทวาดะ", jp: "十和田湖", img: "img/s-towada.jpg", desc: "ทะเลสาบปากปล่องภูเขาไฟ ล่องเรือ และรูปปั้นสาวน้อยโอโตเมะ", dist: "~75 กม. · 1 ชม. 45 นาที", q: "Lake Towada Yasumiya" },
+        { name: "ปราสาทฮิโรซากิ", jp: "弘前城", img: "img/s-hirosaki.jpg", desc: "ปราสาทดั้งเดิมสมัยเอโดะ สวนกว้าง เมืองแห่งแอปเปิล", dist: "~40 กม. · 50 นาที", q: "Hirosaki Castle" }
+      ],
+      foods: [
+        { name: "โนกเกะด้ง ตลาดปลา Furukawa", jp: "青森魚菜センター", order: "のっけ丼 ซื้อคูปอง แล้วเดินเลือกซาชิมิโปะหน้าข้าวเอง", desc: "07:00–16:00 · ปิดวันอังคาร", q: "青森魚菜センター" },
+        { name: "ราเมนมิโซะแกงกะหรี่นม", jp: "味の札幌 大西", order: "味噌カレー牛乳ラーメン ราเมนท้องถิ่นของอาโอโมริ", desc: "ร้านดังย่านฟุรุคาวะ", q: "味の札幌 大西 青森" },
+        { name: "A-Factory", jp: "エーファクトリー", order: "ไซเดอร์แอปเปิล ขนมแอปเปิล ของฝาก", desc: "ริมท่าเรือ ติดพิพิธภัณฑ์เนบุตะ", q: "A-FACTORY Aomori" }
+      ]
+    },
+    {
+      date: "2026-10-14", nightNo: 5, nights: 1,
+      area: "เซนได, มิยางิ", areaJp: "仙台",
+      hotel: "Hotel JAL City Sendai", hotelJp: "ホテルJALシティ仙台",
+      img: "img/h-sendai.jpg", img2: "img/h-sendai-lobby.jpg", img2Label: "ล็อบบี้", credit: "ภาพ: โรงแรม",
+      url: "https://www.sendai.jalcity.co.jp/",
+      maps: "https://www.google.com/maps/search/?api=1&query=Hotel+JAL+City+Sendai",
+      addr: "〒980-0013 宮城県仙台市青葉区花京院1-2-12", bf: true,
+      facts: ["เช็กอิน 14:00 · เช็กเอาต์ 11:00", "เดิน 5 นาทีจากสถานีเซนได"],
+      rooms: [{ name: "Standard 2 เตียง", ppl: 2, sqm: 35 }, { name: "Standard 3 เตียง", ppl: 3, sqm: 35 }],
+      note: "ที่จอดรถมีแค่ 10 คัน ใครถึงก่อนได้ก่อน จ่ายเงินสด จองไม่ได้ ถ้าเต็มพนักงานจะแนะนำลานจอดใกล้ๆ",
+      foliage: { pct: 25, t: "ยังเขียวเป็นส่วนใหญ่" },
+      spots: [
+        { name: "จุดชมวิวฟรีตึก AER", jp: "アエル展望テラス", desc: "ชั้น 31 ข้างสถานีเซนได ชมวิวเมืองฟรี สวยตอนค่ำ", dist: "เดิน ~5 นาที", q: "AER 展望テラス 仙台", near: true },
+        { name: "ถนนโจเซ็นจิ", jp: "定禅寺通", desc: "ถนนต้นเซลโควาร่มรื่นกลางเมือง เดินเล่นต่อไปช้อปที่อาเขตอิจิบันโจ", dist: "~1.5 กม. · เดิน 20 นาที", q: "定禅寺通 仙台", near: true },
+        { name: "ศาลเจ้าโอซากิฮาจิมัง", jp: "大崎八幡宮", img: "img/s-osaki.jpg", desc: "ศาลเจ้าสมบัติชาติสีดำทอง สร้างโดยดาเตะ มาซามุเนะ", dist: "~3.5 กม. · 12 นาที", q: "大崎八幡宮" },
+        { name: "อ่าวมัตสึชิมะ", jp: "松島", img: "img/s-matsushima.jpg", desc: "หนึ่งในสามวิวงามของญี่ปุ่น เกาะสนกว่า 260 เกาะ ล่องเรือชมอ่าว แวะได้ระหว่างทางเข้าเซนได", dist: "~30 กม. · 40 นาที", q: "Matsushima Bay cruise" },
+        { name: "โกไดโด", jp: "五大堂", img: "img/s-godaido.jpg", desc: "ศาลาเล็กบนเกาะ เดินข้ามสะพานแดง ใกล้วัดซุยกันจิ", dist: "ที่มัตสึชิมะ", q: "Godaido Matsushima" },
+        { name: "ซุยโฮเดน", jp: "瑞鳳殿", img: "img/s-zuihoden.jpg", desc: "สุสานสีสดของดาเตะ มาซามุเนะ ท่ามกลางป่าซีดาร์", dist: "~3 กม. · 10 นาที", q: "Zuihoden Sendai" },
+        { name: "ซากปราสาทเซนได", jp: "仙台城跡", img: "img/s-sendaijo.jpg", desc: "จุดชมวิวเมืองตอนเย็น รูปปั้นดาเตะ มาซามุเนะบนหลังม้า", dist: "~4 กม. · 15 นาที", q: "Sendai Castle Ruins" }
+      ],
+      foods: [
+        { name: "ลิ้นวัวย่าง Rikyu", jp: "利久 仙台駅店", order: "牛たん定食 ลิ้นวัวย่าง ข้าวบาร์เลย์ ซุปหางวัว", desc: "ชั้น 3 สถานีเซนได ซอย Gyutan-dori เดินจากโรงแรมได้", q: "利久 仙台駅店" },
+        { name: "Zunda Saryo", jp: "ずんだ茶寮", order: "ずんだシェイク ปั่นถั่วแระหวาน หรือโมจิซุนดะ", desc: "ชั้น 3 สถานีเซนได", q: "ずんだ茶寮 仙台駅" },
+        { name: "หอยนางรมย่างมัตสึชิมะ", jp: "松島 焼き牡蠣", order: "หอยนางรมย่าง หรือ穴子丼 ข้าวหน้าปลาไหลทะเล", desc: "หลายร้านริมอ่าว ฤดูหอยเริ่มเดือน ต.ค.", q: "松島 焼き牡蠣" }
+      ]
+    },
+    {
+      date: "2026-10-15", nightNo: 6, nights: 1,
+      area: "คินุงาวะออนเซ็น, นิกโก้", areaJp: "鬼怒川温泉",
+      hotel: "Hotel Kinugawa Gyoen", hotelJp: "大江戸温泉物語 ホテル鬼怒川御苑",
+      img: "img/h-kinugawa.jpg", img2: "img/h-kinugawa-bath.jpg", img2Label: "ออนเซ็น", credit: "ภาพ: โรงแรม",
+      url: "https://www.ooedoonsen.jp/kinugawa-gyoen/",
+      maps: "https://www.google.com/maps/search/?api=1&query=Ooedo+Onsen+Monogatari+Hotel+Kinugawa+Gyoen",
+      addr: "〒321-2521 栃木県日光市藤原1-1", bf: true, bfText: "รวมอาหารเย็น + เช้า",
+      facts: ["เช็กอิน 15:00 (ก่อน 19:00) · เช็กเอาต์ 11:00", { t: "ออนเซ็น", special: true }, { t: "ซาวน่า", special: true }, { t: "คาราโอเกะ", special: true }, "ที่จอดรถฟรี"],
+      rooms: [{ name: "ห้องญี่ปุ่น (ทาทามิ)", ppl: 4 }],
+      note: "คืนนี้เหลือ 4 คน เพราะ Sora บินกลับก่อน · อาหารเย็นเป็นบุฟเฟต์ของเครือโอเอโดะออนเซ็น ไม่ต้องหาร้านข้างนอก",
+      foliage: { pct: 50, t: "ที่สูง (น้ำตกริวสึ) เริ่มแดง" },
+      spots: [
+        { name: "สะพานแขวนคินุทาเตะอิวะ", jp: "鬼怒楯岩大吊橋", img: "img/s-tateiwa.jpg", desc: "สะพานแขวนข้ามแม่น้ำคินุ วิวหุบเขาและใบไม้ริมน้ำ", dist: "~1 กม. · เดิน 15 นาที", q: "鬼怒楯岩大吊橋", near: true },
+        { name: "ล่องเรือคินุงาวะ", jp: "鬼怒川ライン下り", desc: "ล่องเรือไม้ตามแม่น้ำคินุ ชมหน้าผาหิน ราว 40 นาที", dist: "~1 กม. · 5 นาที", q: "鬼怒川ライン下り", near: true },
+        { name: "โทบุเวิลด์สแควร์", jp: "東武ワールドスクウェア", img: "img/s-tobu.jpg", desc: "สวนโมเดลจำลองสถานที่ดังทั่วโลกสเกล 1:25 เด็กๆ ชอบ", dist: "~5 กม. · 10 นาที", q: "東武ワールドスクウェア" },
+        { name: "ศาลเจ้านิกโก้โทโชกู", jp: "日光東照宮", img: "img/s-toshogu.jpg", desc: "ศาลเจ้ามรดกโลกสุดอลังการ มีลิงสามตัวและแมวหลับ", dist: "~20 กม. · 30 นาที", q: "Nikko Toshogu" },
+        { name: "สะพานชินเคียว", jp: "神橋", img: "img/s-shinkyo.jpg", desc: "สะพานแดงศักดิ์สิทธิ์ข้ามแม่น้ำไดยะ ทางเข้าเขตศาลเจ้า", dist: "~20 กม. · 30 นาที", q: "Shinkyo Bridge Nikko" },
+        { name: "น้ำตกเคงอน + ทะเลสาบชูเซ็นจิ", jp: "華厳の滝・中禅寺湖", img: "img/s-chuzenji.jpg", desc: "ขับขึ้นถนน 48 โค้งอิโรฮะซากะ (กระเช้าอาเคจิไดระปิดซ่อมถึงปี 2027)", dist: "~40 กม. · 1 ชม.", q: "Kegon Falls" },
+        { name: "น้ำตกริวสึ", jp: "竜頭の滝", img: "img/s-ryuzu.jpg", desc: "น้ำตกรูปหัวมังกร อยู่สูงกว่าทะเลสาบ ใบไม้แดงเร็วกว่าที่อื่นในนิกโก้", dist: "~50 กม. · 1 ชม. 15 นาที", q: "Ryuzu Falls" },
+        { name: "เอโดะวันเดอร์แลนด์", jp: "江戸ワンダーランド", img: "img/s-edomura.jpg", desc: "ธีมพาร์คย้อนยุคเอโดะ แต่งชุดนินจา ดูโชว์ ใกล้โรงแรม", dist: "~6 กม. · 10 นาที", q: "Edo Wonderland Nikko Edomura" }
+      ],
+      foods: [
+        { name: "บุฟเฟต์ที่โรงแรม", jp: "バイキング", order: "อาหารเย็นและเช้ารวมในห้องพักแล้ว", desc: "" , q: "大江戸温泉物語 ホテル鬼怒川御苑" },
+        { name: "ยูบะ Ebisuya", jp: "恵比寿家", order: "湯葉料理 ชุดฟองเต้าหู้นิกโก้", desc: "ร้านยูบะเก่าแก่ ควรจอง", q: "元祖日光ゆば料理 恵比寿家" },
+        { name: "Maruhide Shokudo", jp: "日光まるひで食堂", order: "ゆば丼 ข้าวหน้ายูบะ ต้นตำรับ", desc: "ถนนนิชิซันโดใกล้โทโชกู", q: "日光まるひで食堂" },
+        { name: "ซาลาเปายูบะทอด Sakaeya", jp: "日光さかえや", order: "揚げゆばまんじゅう กินเล่นร้อนๆ", desc: "ใกล้สถานี Tobu-Nikko", q: "日光さかえや 揚げゆばまんじゅう" }
+      ]
+    },
+    {
+      date: "2026-10-16", nightNo: 7, nights: 2, range: "16–17 ต.ค.",
+      area: "นิชินิปโปริ, โตเกียว", areaJp: "東京・西日暮里",
+      hotel: "Residence Condominium KALAHAAI", hotelJp: "サービスアパートメント · 西日暮里",
+      img: "img/h-tokyo.jpg", imgPos: "50% 35%", img2: "img/h-tokyo-room.jpg", img2Label: "ห้องพัก", credit: "ภาพ: Trip.com",
+      url: "https://oakhouse.jp/eng/house/10105",
+      maps: "https://www.google.com/maps/search/?api=1&query=35.7350540,139.7748413",
+      addr: "1-29-20 Nishinippori, Arakawa-ku, Tokyo", bf: false,
+      facts: ["เช็กอิน 15:00 · เช็กเอาต์ 10:00 (18 ต.ค.)", "เช็กอินเองด้วยรหัส", "มีครัวเล็ก"],
+      rooms: [{ name: "Suite Premium 4 เตียง", ppl: 4, sqm: 45 }],
+      note: "คอนโดอยู่ในโตเกียว และ<b>ไม่มีที่จอดรถ</b> ใช้ลานจอดหยอดเหรียญใกล้ๆ หรือคืนรถเช่าตอนเข้าโตเกียว · วันกลับนั่ง Skyliner จากสถานีนิปโปริไปนาริตะ T1 ราว 40 นาที",
+      foliage: { pct: 10, t: "ในเมืองยังเขียว" },
+      spots: [
+        { name: "ย่านผ้านิปโปริ", jp: "日暮里繊維街", desc: "ถนนร้านผ้ากว่า 80 ร้าน ผ้าลายญี่ปุ่นสวยๆ ราคาส่ง", dist: "เดิน ~15 นาที", q: "日暮里繊維街", near: true },
+        { name: "ศาลเจ้าเนซุ", jp: "根津神社", desc: "ศาลเจ้าเก่าแก่ มีอุโมงค์โทริอิสีแดงเล็กๆ เรียงยาว", dist: "~2.5 กม. · 10 นาที", q: "根津神社" },
+        { name: "สวนริคุกิเอ็น", jp: "六義園", img: "img/s-rikugien.jpg", desc: "สวนญี่ปุ่นเดินชมรอบสระ หนึ่งในสวนสวยที่สุดของโตเกียว", dist: "~3 กม. · 12 นาที", q: "六義園" },
+        { name: "ยานากะกินซ่า", jp: "谷中銀座", img: "img/s-yanaka.jpg", desc: "ถนนช้อปปิ้งเมืองเก่า ของกินเล่น บันไดยูยาเกะดันดัน", dist: "เดิน ~20 นาที", q: "Yanaka Ginza" },
+        { name: "สวนอุเอโนะ & สระชิโนบาซุ", jp: "上野公園・不忍池", img: "img/s-ueno.jpg", desc: "สวนใหญ่ สวนสัตว์มีแพนด้า พิพิธภัณฑ์ และตลาดอะเมโยโกะ", dist: "รถไฟ ~10 นาที", q: "Shinobazu Pond Ueno" },
+        { name: "วัดเซ็นโซจิ อาซากุสะ", jp: "浅草寺", img: "img/s-sensoji.jpg", desc: "วัดเก่าแก่ที่สุดของโตเกียว ประตูคามินาริมงและถนนนากามิเซะ", dist: "~5 กม. · 20 นาที", q: "Sensoji Temple" },
+        { name: "โตเกียวสกายทรี", jp: "東京スカイツリー", img: "img/s-skytree.jpg", desc: "หอคอย 634 ม. อากาศใสช่วงใบไม้ร่วงเห็นวิวไกล", dist: "~6 กม. · 20 นาที", q: "Tokyo Skytree" }
+      ],
+      foods: [
+        { name: "ดังโงะ Habutae", jp: "羽二重団子", order: "ดังโงะเนื้อนุ่ม ราดซอสโชยุ หรือถั่วแดง", desc: "ร้านขนมเก่าแก่ตั้งแต่ปี 1819 ใกล้สถานีนิปโปริ", q: "羽二重団子 本店" },
+        { name: "เมนจิคัตสึ Niku no Sato", jp: "肉のサトー", order: "谷中メンチ เนื้อบดทอดกรอบ กินเดินเล่น", desc: "ในยานากะกินซ่า", q: "肉のサトー 谷中銀座" },
+        { name: "ตลาดอะเมโยโกะ", jp: "アメ横", order: "ของกินริมทาง ผลไม้เสียบไม้ ซีฟู้ด", desc: "ข้างสถานีอุเอโนะ", q: "Ameyoko" }
+      ]
+    }
+  ],
+  checks: [
+    { group: "เอกสาร", jp: "しょるい", items: ["พาสปอร์ต (อายุเหลือเกิน 6 เดือน)", "ตั๋วเครื่องบิน / เช็กอินออนไลน์", "ใบขับขี่สากล + ใบขับขี่ไทย", "ใบจองรถเช่า", "ใบจองโรงแรมทั้ง 6 แห่ง", "ประกันเดินทาง MSIG"] },
+    { group: "ขับรถ", jp: "ドライブ", items: ["บัตร ETC สำหรับทางด่วน", "เช็กความสูงรถ (ที่จอดโมริโอกะไม่เกิน 1.80 ม.)", "เตรียมเงินสดค่าจอดที่เซนได", "วางแผนที่จอดหรือคืนรถในโตเกียว", "เติมน้ำมันก่อนคืนรถ"] },
+    { group: "เสื้อผ้าหน้าหนาว", jp: "ふゆじたく", items: ["เสื้อกันหนาว / ดาวน์บาง (บนเขาฮักโกดะหนาวมาก)", "ผ้าพันคอ ถุงมือ", "รองเท้าเดินสบาย กันลื่น", "ร่มพับ", "ยาประจำตัว"] },
+    { group: "ของใช้", jp: "べんり", items: ["เงินเยนสด", "eSIM หรือ Pocket WiFi", "Suica ใน iPhone / บัตร IC", "ปลั๊กแปลงขาแบน (ญี่ปุ่นใช้ Type A)", "พาวเวอร์แบงก์ (ห้ามโหลดใต้เครื่อง)", "จองวังโกะโซบะ Azumaya ล่วงหน้า"] }
+  ]
+};
+
+</script>
+<script>
+(function () {
+  const T = window.TRIP;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const TH_MONTH = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+  const TH_DOW = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสฯ", "ศุกร์", "เสาร์"];
+  const JP_DOW = ["日", "月", "火", "水", "木", "金", "土"];
+  const LEAF_COLORS = ["#D8452E", "#E9A23B", "#E46A35", "#C23B2A", "#D98B2B", "#B9472F", "#E0782F", "#5E8F52"];
+
+  /* ---------- countdown ---------- */
+  function tick() {
+    const el = $("count");
+    const dep = new Date(T.depart).getTime();
+    const back = new Date(T.returnHome).getTime();
+    const now = Date.now();
+    let target = dep, label = "ก่อนเครื่องออกจากกรุงเทพฯ";
+    if (now >= dep && now < back) { target = back; label = "สนุกต่อได้อีก ก่อนบินกลับวันที่ 18"; }
+    if (now >= back) { el.innerHTML = '<span class="label">กลับถึงบ้านแล้ว おつかれさま！</span>'; return; }
+    let s = Math.max(0, Math.floor((target - now) / 1000));
+    const d = Math.floor(s / 86400); s -= d * 86400;
+    const h = Math.floor(s / 3600); s -= h * 3600;
+    const m = Math.floor(s / 60);
+    const cell = (n, u) => `<div class="cell"><div class="n">${String(n).padStart(2, "0")}</div><div class="u">${u}</div></div>`;
+    el.innerHTML = (d ? cell(d, "วัน") : "") + cell(h, "ชั่วโมง") + cell(m, "นาที") + `<span class="label">${label}</span>`;
+  }
+  tick(); setInterval(tick, 20000);
+
+  /* ---------- crew ---------- */
+  $("crewList").innerHTML = T.crew.map((c) => `
+    <div class="member"><span class="av" style="background:${c.color}">${esc(c.name[0])}</span>
+      <span><b>${esc(c.name)}</b><small>${esc(c.role)}</small></span></div>`).join("");
+
+  /* ---------- flights ---------- */
+  const planeSvg = '<svg width="54" height="14" viewBox="0 0 54 14" aria-hidden="true"><path d="M2 7 H44" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M44 2 L52 7 L44 12 L46 7 Z" fill="currentColor"/></svg>';
+  $("passes").innerHTML = T.passes.map((p) => `
+    <article class="pass ${p.cls}">
+      <div class="pass-top"><span class="who">${esc(p.who)}</span><span class="tag">${esc(p.tag)}</span></div>
+      <div class="legs">${p.legs.map((l) => `
+        <div class="leg${l.pending ? " pending" : ""}">
+          <div class="date"><span><b>${esc(l.flight)}</b> · ${esc(l.date)}</span>${l.note ? `<span class="chip">${esc(l.note)}</span>` : ""}</div>
+          <div class="ap">${esc(l.from)}<small class="t">${esc(l.dep)} · ${esc(l.fromName)}</small></div>
+          <div class="plane">${planeSvg}${esc(l.dur || "")}</div>
+          <div class="ap r">${esc(l.to)}<small class="t">${esc(l.arr)}${l.plus1 ? '<span class="plus1">+1</span>' : ""} · ${esc(l.toName)}</small></div>
+        </div>`).join("")}
+      </div>
+    </article>`).join("");
+
+  $("fullRoute").href = T.routeUrl;
+  setupDrive();
+  if (window.__drive) window.__drive(true);
+  function setupDrive() {
+    const STOPS = [
+      { th: "นาริตะ", jp: "成田", lon: 140.39, lat: 35.77, left: false },
+      { th: "ไอสึ", jp: "会津", lon: 139.93, lat: 37.49, left: true },
+      { th: "โมริโอกะ", jp: "盛岡", lon: 141.15, lat: 39.70, left: false },
+      { th: "อาโอโมริ", jp: "青森", lon: 140.74, lat: 40.82, left: true },
+      { th: "เซนได", jp: "仙台", lon: 140.87, lat: 38.26, left: false },
+      { th: "คินุงาวะ", jp: "鬼怒川", lon: 139.72, lat: 36.83, left: true },
+      { th: "โตเกียว", jp: "東京", lon: 139.77, lat: 35.735, left: true },
+      { th: "นาริตะ", jp: "成田", lon: 140.39, lat: 35.77, left: false }
+    ];
+    const LEGS = [
+      { day: 1, date: "เสาร์ 10 ต.ค.", from: "นาริตะ", to: "ไอสึวากามัตสึ", km: 290, time: "3 ชม. 45 นาที", hotel: "Hotel New Palace", bow: -0.22 },
+      { day: 2, date: "อาทิตย์ 11 ต.ค.", from: "ไอสึ", to: "โมริโอกะ", km: 300, time: "3 ชม. 30 นาที", hotel: "ART HOTEL Morioka", bow: 0.10 },
+      { day: 3, date: "จันทร์ 12 ต.ค.", from: "โมริโอกะ", to: "อาโอโมริ", km: 180, time: "2 ชม. 15 นาที", hotel: "ART HOTEL Aomori (2 คืน)", bow: -0.25 },
+      { day: 5, date: "พุธ 14 ต.ค.", from: "อาโอโมริ", to: "เซนได", km: 360, time: "4 ชม.", hotel: "Hotel JAL City Sendai", bow: 0.16 },
+      { day: 6, date: "พฤหัสฯ 15 ต.ค.", from: "เซนได", to: "คินุงาวะ", km: 230, time: "3 ชม.", hotel: "Hotel Kinugawa Gyoen", bow: -0.12 },
+      { day: 7, date: "ศุกร์ 16 ต.ค.", from: "คินุงาวะ", to: "โตเกียว", km: 150, time: "2 ชม. 30 นาที", hotel: "Residence KALAHAAI (2 คืน)", bow: -0.2 },
+      { day: 9, date: "อาทิตย์ 18 ต.ค.", from: "โตเกียว", to: "นาริตะ", km: 65, time: "1 ชม.", hotel: "บินกลับบ้าน ✈", bow: 0.35 }
+    ];
+    const TOTAL = LEGS.reduce((s, l) => s + l.km, 0);
+    const COAST = [[140.35,41.25],[140.65,41.05],[140.74,40.86],[140.86,40.92],[141.13,40.88],[141.2,41.25],[140.82,41.15],[140.95,41.52],[141.45,41.43],[141.4,40.7],[141.55,40.5],[142.0,39.65],[141.6,38.9],[141.3,38.4],[141.0,38.2],[140.95,37.8],[140.95,37.0],[140.65,36.6],[140.85,35.72],[140.4,35.2],[139.85,34.95],[139.8,35.6],[139.4,35.35],[139.0,35.5],[138.6,36.2],[138.6,37.0],[139.05,37.95],[139.45,38.3],[139.83,38.9],[140.05,39.7],[139.7,39.95],[140.0,40.2],[139.9,40.65],[140.35,41.25]];
+    const LON0 = 138.45, LON1 = 142.2, LAT0 = 35.05, LAT1 = 41.6, W = 320;
+    const KX = W / (LON1 - LON0), KY = KX * 1.28, H = Math.round((LAT1 - LAT0) * KY);
+    const px = (lon, lat) => [(lon - LON0) * KX, (LAT1 - lat) * KY];
+    const P = STOPS.map((s) => px(s.lon, s.lat));
+    const segD = LEGS.map((l, i) => {
+      const [x1, y1] = P[i], [x2, y2] = P[i + 1];
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, dx = x2 - x1, dy = y2 - y1;
+      const cx = mx - dy * l.bow, cy = my + dx * l.bow;
+      return `M${x1.toFixed(1)} ${y1.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+    });
+    const coast = COAST.map((c) => px(c[0], c[1]).map((v) => v.toFixed(1)).join(",")).join(" ");
+    let s = `<svg viewBox="-6 -6 ${W + 12} ${H + 12}" role="img" aria-label="แผนที่เส้นทางขับรถ มีรถวิ่งจากนาริตะ ขึ้นไปอาโอโมริ แล้ววนกลับลงมาโตเกียว">
+      <defs>
+        <linearGradient id="paperG" x1="0" y1="0" x2="1" y2="1"><stop offset=".5" stop-color="#FFFDF8"/><stop offset=".5" stop-color="#F1E8D8"/></linearGradient>
+        <clipPath id="landClip"><polygon points="${coast}"/></clipPath>
+      </defs>
+      <polygon points="${coast}" fill="url(#paperG)" stroke="#D9CBB2" stroke-width="1.5" stroke-linejoin="round"/>
+      <g clip-path="url(#landClip)" stroke="rgba(30,42,68,.07)" stroke-width="1"><path d="M0 0 L${W} ${H} M${W} 0 L0 ${H} M${W / 2} 0 L${W / 2} ${H} M0 ${H / 2} L${W} ${H / 2}"/></g>
+      <text x="${px(141.85, 36.3)[0]}" y="${px(141.85, 36.3)[1]}" fill="#2B4C7E" font-size="11" text-anchor="middle" opacity=".7">太平洋</text>
+      <text x="${px(138.9, 39.6)[0]}" y="${px(138.9, 39.6)[1]}" fill="#2B4C7E" font-size="11" text-anchor="middle" opacity=".7">日本海</text>`;
+    segD.forEach((d) => { s += `<path d="${d}" fill="none" stroke="#B9AE9A" stroke-width="2" stroke-dasharray="4 5" stroke-linecap="round"/>`; });
+    segD.forEach((d, i) => { s += `<path class="seg-done" d="${d}" fill="none" stroke="#D7402B" stroke-width="3.2" stroke-linecap="round"/>`; });
+    STOPS.forEach((st, i) => {
+      if (i === STOPS.length - 1) return;
+      const [x, y] = P[i];
+      s += `<g><circle class="map-stop" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" fill="#FFFDF8" stroke="#1E2A44" stroke-width="2"/>
+        <text x="${(x + (st.left ? -11 : 11)).toFixed(1)}" y="${(y + 4).toFixed(1)}" fill="#1E2A44" font-size="12" font-weight="600" text-anchor="${st.left ? "end" : "start"}">${st.th}</text></g>`;
+    });
+    s += `<g id="car"><g id="carBody" transform="scale(1.25)">
+        <ellipse cx="0" cy="8" rx="13" ry="2.4" fill="rgba(30,42,68,.22)"/>
+        <polygon points="-14,4 -12,-3 -5,-4 0,-10 8,-10 12,-3 14,-2 14,4" fill="#D7402B"/>
+        <polygon points="-14,4 -12,-3 14,-2 14,4" fill="#B5321F"/>
+        <polygon points="1,-8.5 7,-8.5 10,-3.6 -2.5,-3.9" fill="#DDE5F0"/>
+        <polygon points="1,-8.5 4,-8.5 4,-3.8 -2.5,-3.9" fill="#FFFFFF" opacity=".7"/>
+        <circle cx="-8" cy="4.5" r="3.4" fill="#1E2A44"/><circle cx="-8" cy="4.5" r="1.2" fill="#F4EFE6"/>
+        <circle cx="8" cy="4.5" r="3.4" fill="#1E2A44"/><circle cx="8" cy="4.5" r="1.2" fill="#F4EFE6"/>
+        <rect x="12" y="-1.5" width="2.4" height="1.8" fill="#E0A526"/>
+      </g></g></svg>`;
+    document.getElementById("driveMap").innerHTML = s;
+
+    const segs = [...document.querySelectorAll("#driveMap .seg-done")];
+    const lens = segs.map((p) => p.getTotalLength());
+    segs.forEach((p, i) => { p.style.strokeDasharray = lens[i] + " " + lens[i]; p.style.strokeDashoffset = lens[i]; });
+    const dots = [...document.querySelectorAll("#driveMap .map-stop")];
+    const car = document.getElementById("car");
+    const stamps = [...document.querySelectorAll("#stamps .stamp")];
+    const $ = (id) => document.getElementById(id);
+    $("dpLegs").innerHTML = LEGS.map(() => "<i></i>").join("");
+    const pills = [...$("dpLegs").children];
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const st = { leg: 0, t: 0, phase: "drive", wait: 0, playing: !reduce, active: false, last: 0, raf: 0 };
+    const SPEED = 70; // svg units per second
+
+    function stampAt(i) {
+      stamps.forEach((el, k) => el.classList.toggle("now", k === i));
+      const el = stamps[i];
+      if (!el) return;
+      el.classList.remove("thump"); void el.offsetWidth; el.classList.add("thump");
+    }
+    function panel(arrived) {
+      const L = LEGS[st.leg];
+      $("dpDay").textContent = "DAY " + L.day;
+      $("dpDate").textContent = L.date;
+      $("dpFrom").textContent = L.from;
+      $("dpTo").textContent = L.to;
+      $("dpKm").textContent = L.km + " กม.";
+      $("dpTime").textContent = L.time;
+      $("dpHotel").textContent = L.hotel;
+      const s = $("dpStatus");
+      s.textContent = arrived ? "ถึงแล้ว!" : "กำลังขับ";
+      s.classList.toggle("arrived", arrived);
+      pills.forEach((p, k) => { p.className = k < st.leg || (k === st.leg && arrived) ? "done" : k === st.leg ? "on" : ""; });
+    }
+    function render() {
+      const i = st.leg, len = lens[i];
+      segs.forEach((p, k) => { p.style.strokeDashoffset = k < i ? 0 : k === i ? len * (1 - st.t) : lens[k]; });
+      dots.forEach((d, k) => d.setAttribute("fill", k <= i + (st.t >= 1 ? 1 : 0) && k > 0 || (k === 0) ? "#D7402B" : "#FFFDF8"));
+      const at = Math.min(len, Math.max(0, st.t * len));
+      const p = segs[i].getPointAtLength(at);
+      const q = segs[i].getPointAtLength(Math.min(len, at + 2));
+      const b = segs[i].getPointAtLength(Math.max(0, at - 2));
+      const dx = q.x - b.x, dy = q.y - b.y;
+      const flip = dx < 0 ? -1 : 1;
+      let a = Math.atan2(dy, Math.abs(dx) || .001) * 180 / Math.PI;
+      a = Math.max(-35, Math.min(35, a));
+      car.setAttribute("transform", `translate(${p.x.toFixed(1)} ${(p.y - 6).toFixed(1)}) scale(${flip} 1) rotate(${a.toFixed(1)})`);
+      const odo = LEGS.slice(0, i).reduce((s2, l) => s2 + l.km, 0) + LEGS[i].km * st.t;
+      $("dpOdo").textContent = String(Math.round(odo)).padStart(4, "0");
+    }
+    function goStop(stopIdx) {
+      // park the car at a stop (1..7), as if it just arrived
+      st.leg = Math.max(0, Math.min(LEGS.length - 1, stopIdx - 1));
+      st.t = stopIdx === 0 ? 0 : 1;
+      st.phase = stopIdx === 0 ? "drive" : "wait";
+      st.wait = stopIdx === LEGS.length ? 2.6 : 1.4;
+      panel(stopIdx !== 0);
+      render();
+      stampAt(stopIdx);
+    }
+    function frame(ts) {
+      const dt = Math.min(.05, (ts - (st.last || ts)) / 1000);
+      st.last = ts;
+      if (st.playing) {
+        if (st.phase === "drive") {
+          st.t += dt * SPEED / lens[st.leg];
+          if (st.t >= 1) { st.t = 1; st.phase = "wait"; st.wait = st.leg === LEGS.length - 1 ? 2.6 : 1.4; panel(true); stampAt(st.leg + 1); }
+        } else {
+          st.wait -= dt;
+          if (st.wait <= 0) {
+            if (st.leg === LEGS.length - 1) { st.leg = 0; stampAt(0); } else st.leg++;
+            st.t = 0; st.phase = "drive"; panel(false);
+          }
+        }
+        render();
+      }
+      st.raf = st.active ? requestAnimationFrame(frame) : 0;
+    }
+    function setPlaying(v) {
+      st.playing = v;
+      $("btnPlay").textContent = v ? "⏸ หยุด" : "▶ เล่น";
+    }
+    $("btnPlay").addEventListener("click", () => setPlaying(!st.playing));
+    $("btnNext").addEventListener("click", () => { const cur = st.t >= 1 ? st.leg + 1 : st.leg; goStop(cur >= LEGS.length ? 0 : cur + 1); });
+    $("btnPrev").addEventListener("click", () => { const cur = st.t >= 1 ? st.leg + 1 : st.leg; goStop(Math.max(0, cur - 1)); });
+    setPlaying(st.playing);
+    panel(false); render(); stamps[0].classList.add("now");
+    window.__drive = (on) => {
+      st.active = on;
+      if (on && !st.raf) { st.last = 0; st.raf = requestAnimationFrame(frame); }
+    };
+  }
+
+
+  /* ---------- nights ---------- */
+  const leafSvg = (color) => `<svg viewBox="-50 -50 100 100" aria-hidden="true"><path d="${mapleD(44)}" fill="${color}"/><path d="M0 8 L0 46" stroke="${color}" stroke-width="4" stroke-linecap="round"/></svg>`;
+  function mapleD(r) {
+    // 5-lobed maple outline from polar points
+    const lobes = [[-90, 1], [-36, .92], [18, .78], [162, .78], [216, .92]];
+    let d = "";
+    const P = (a, rr) => [Math.cos(a * Math.PI / 180) * rr, Math.sin(a * Math.PI / 180) * rr];
+    lobes.forEach(([a, k], i) => {
+      const tip = P(a, r * k), l = P(a - 14, r * k * .55), rr = P(a + 14, r * k * .55);
+      const next = lobes[(i + 1) % lobes.length][0];
+      let mid = (a + (next < a ? next + 360 : next)) / 2;
+      const notch = P(mid, r * (i === 2 ? .3 : .28));
+      d += (i ? " L" : "M") + l.map((v) => v.toFixed(1)).join(" ") + " L" + tip.map((v) => v.toFixed(1)).join(" ") + " L" + rr.map((v) => v.toFixed(1)).join(" ") + " L" + notch.map((v) => v.toFixed(1)).join(" ");
+    });
+    return d + " Z";
+  }
+
+  $("nightList").innerHTML = T.nights.map((n, idx) => {
+    const d = new Date(n.date + "T12:00:00+09:00");
+    const color = LEAF_COLORS[idx % LEAF_COLORS.length];
+    const nightsTxt = n.nights > 1 ? `${n.nights} คืน (${n.range})` : "1 คืน";
+    const img = n.img
+      ? `<img src="${esc(n.img)}" alt="${esc(n.hotel)}" loading="lazy" style="object-position:${n.imgPos || "50% 50%"}" onerror="this.remove()">`
+      : "";
+    return `
+    <article class="night" id="day-${d.getDate()}">
+      <div class="date-stamp">
+        <div class="leaf">${leafSvg(color)}<span class="d">${d.getDate()}</span></div>
+        <span class="dow">${TH_DOW[d.getDay()]} <span class="jpdow">(${JP_DOW[d.getDay()]})</span><br>${d.getDate()} ${TH_MONTH[d.getMonth()]} 69</span>
+      </div>
+      <div style="min-width:0">
+        <div class="hotel">
+          <a class="photo" href="${esc(n.url)}" target="_blank" rel="noopener" aria-label="เปิดเว็บ ${esc(n.hotel)}">
+            <span class="fallback">${esc(n.areaJp)}</span>
+            ${img}
+            <span class="nights">คืนที่ ${n.nightNo} · ${nightsTxt}</span>
+            <span class="area">${esc(n.area)}<span class="jp">${esc(n.areaJp)}</span></span>
+            ${n.img2 ? `<span class="inset"><img src="${esc(n.img2)}" alt="${esc(n.img2Label)} ${esc(n.hotel)}" loading="lazy" onerror="this.parentNode.remove()"><span>${esc(n.img2Label)}</span></span>` : ""}
+            ${n.credit ? `<span class="credit">${esc(n.credit)}</span>` : ""}
+          </a>
+          <div class="hotel-body">
+            <h3>${esc(n.hotel)}</h3>
+            <div class="jpname">${esc(n.hotelJp)}</div>
+            <div class="facts">
+              <span class="fact ${n.bf ? "bf-yes" : "bf-no"}">${esc(n.bfText || (n.bf ? "รวมอาหารเช้า" : "ไม่รวมอาหารเช้า"))}</span>
+              ${(n.facts || []).map((f) => `<span class="fact${f.special ? " special" : ""}">${esc(f.t || f)}</span>`).join("")}
+            </div>
+            <div class="rooms">${n.rooms.map((r) => `<div class="room"><b>${esc(r.name)}</b><span>${r.ppl} คน${r.sqm ? ` · ${r.sqm} ตร.ม.` : ""}${r.extra ? ` · ${esc(r.extra)}` : ""}</span></div>`).join("")}</div>
+            ${n.note ? `<div class="note">${n.note}</div>` : ""}
+            ${n.addr ? `<p class="addr">📍 ${esc(n.addr)}</p>` : ""}
+            <div class="links">
+              <a class="btn solid" href="${esc(n.url)}" target="_blank" rel="noopener">เว็บโรงแรม ↗</a>
+              <a class="btn" href="${esc(n.maps)}" target="_blank" rel="noopener">Google Maps ↗</a>
+            </div>
+          </div>
+        </div>
+        ${n.spots && n.spots.length ? `
+        <div class="explore">
+          <div class="box">
+            <h4>เที่ยวใกล้ๆ <span class="jp">かんこう</span></h4>
+            <p style="margin:-6px 0 4px;font-size:12.5px;color:var(--ink-soft)">ป้ายเขียว = เดินหรือขับไม่ถึง 15 นาทีจากที่พัก</p>
+            ${n.foliage ? `<div class="momiji-meter" style="margin-bottom:12px"><span>ใบไม้</span><span class="bar"><i style="left:${n.foliage.pct}%"></i></span><span>${esc(n.foliage.t)}</span></div>` : ""}
+            <div class="spots">${n.spots.map((s) => `
+              <div class="spot">
+                <div class="thumb">${s.img ? `<img src="${esc(s.img)}" alt="${esc(s.name)}" loading="lazy" onerror="this.remove()">` : `<span class="ph" aria-hidden="true">${esc((s.jp || "").charAt(0))}</span>`}</div>
+                <div><a href="${esc(s.link || "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(s.q || s.name))}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><b>${esc(s.name)} <span class="jp">${esc(s.jp)}</span></b></a>
+                  <p>${esc(s.desc)}</p>
+                  <div class="spot-meta">${s.near ? '<span class="near">ใกล้ที่พัก</span>' : ""}${s.dist ? `<span class="dist">${esc(s.dist)}</span>` : ""}<a class="gm" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.q || s.name)}" target="_blank" rel="noopener">Google Maps ↗</a></div></div>
+              </div>`).join("")}</div>
+          </div>
+          <div class="box">
+            <h4>ร้านอร่อย <span class="jp">グルメ</span></h4>
+            <div class="foods">${n.foods.map((f) => `
+              <div class="food"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f.q || f.jp || f.name)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><b>${esc(f.name)}</b> <span class="jp">${esc(f.jp)}</span></a>
+                <span class="order">สั่ง: ${esc(f.order)}</span>${f.desc ? `<p>${esc(f.desc)}</p>` : ""}<a class="gm" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f.q || f.jp || f.name)}" target="_blank" rel="noopener">Google Maps ↗</a></div>`).join("")}</div>
+          </div>
+        </div>` : ""}
+      </div>
+    </article>`;
+  }).join("");
+
+  /* ---------- checklist ---------- */
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem("aomori-checks") || "{}"); } catch (e) { saved = {}; }
+  let k = 0;
+  $("checks").innerHTML = T.checks.map((g) => `
+    <div class="box"><h4>${esc(g.group)} <span class="jp">${esc(g.jp)}</span></h4><ul>${g.items.map((it) => {
+      const id = "ck" + (k++);
+      return `<li><label for="${id}"><input type="checkbox" id="${id}" ${saved[id] ? "checked" : ""}><span class="tick"></span><span class="txt">${esc(it)}</span></label></li>`;
+    }).join("")}</ul></div>`).join("");
+  function progress() {
+    const all = document.querySelectorAll("#checks input");
+    const done = [...all].filter((i) => i.checked).length;
+    $("ckProgress").textContent = `เตรียมแล้ว ${done} จาก ${all.length} อย่าง (ติ๊กแล้วจะจำไว้ในเครื่องนี้)`;
+  }
+  $("checks").addEventListener("change", (e) => {
+    if (e.target.type !== "checkbox") return;
+    saved[e.target.id] = e.target.checked;
+    try { localStorage.setItem("aomori-checks", JSON.stringify(saved)); } catch (err) {}
+    progress();
+  });
+  progress();
+
+  /* ---------- falling leaves ---------- */
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv = $("leaves"), ctx = cv.getContext("2d");
+  let w, h, dpr;
+  function size() { dpr = Math.min(2, window.devicePixelRatio || 1); w = innerWidth; h = innerHeight; cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  size(); addEventListener("resize", size);
+  const maple = new Path2D(mapleD(10));
+  const ginkgo = new Path2D("M0 10 L-9 -3 Q-6 -10 0 -9 Q6 -10 9 -3 Z M0 10 L0 14");
+  const count = Math.round(Math.min(18, w / 60));
+  const leaves = Array.from({ length: count }, () => spawn(true));
+  function spawn(init) {
+    return { x: Math.random() * w, y: init ? Math.random() * h : -20, s: .7 + Math.random() * .8, vy: .35 + Math.random() * .55, sway: Math.random() * 6.28, sw: .6 + Math.random(), r: Math.random() * 6.28, vr: (Math.random() - .5) * .03,
+      c: LEAF_COLORS[Math.floor(Math.random() * 7)], g: Math.random() < .3, a: .55 + Math.random() * .3 };
+  }
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < leaves.length; i++) {
+      const L = leaves[i];
+      L.sway += .012; L.y += L.vy; L.x += Math.sin(L.sway) * L.sw * .6; L.r += L.vr;
+      if (L.y > h + 20) leaves[i] = spawn(false);
+      ctx.save(); ctx.globalAlpha = L.a; ctx.translate(L.x, L.y); ctx.rotate(L.r); ctx.scale(L.s, L.s * (0.6 + 0.4 * Math.abs(Math.cos(L.sway))));
+      ctx.fillStyle = L.g ? "#E9B23B" : L.c; ctx.fill(L.g ? ginkgo : maple); ctx.restore();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+</script>
+</body></html>
